@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Profiles - Car Maintenance App</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Custom styles for the vehicle profiles */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #vehicle-profiles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        .vehicle-profile {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .vehicle-profile h3 {
+            margin-top: 0;
+        }
+
+        .vehicle-profile p {
+            margin: 5px 0;
+            line-height: 1.5; /* Improved spacing between lines */
+        }
+
+        .vehicle-profile p strong {
+            margin-right: 5px; /* Add a small margin to separate labels and values */
+        }
+
+        /* Style for the vehicle profile name input */
+        .vehicle-profile input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Vehicle Profiles</h1>
+    </header>
+    <main>
+        <h2>All Vehicle Profiles</h2>
+
+        <div class="container">
+            <div id="vehicle-profiles">
+                <!-- where the vehicle profiles are gonna go (from javascript) -->
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Car Maintenance App</p>
+    </footer>
+
+    <script>
+        var vehicleProfilesElement = document.getElementById('vehicle-profiles');
+
+        var storedVehicleProfiles = JSON.parse(localStorage.getItem("myVehicleProfiles"));
+
+        for (var i = 0; i < storedVehicleProfiles.length; i++) {
+            var profile = storedVehicleProfiles[i];
+
+            var profileContainer = document.createElement("div");
+            profileContainer.classList.add("vehicle-profile");
+
+            var profileName = document.createElement("h3");
+            profileName.textContent = profile.name;
+            profileContainer.appendChild(profileName);
+
+            var make = document.createElement("p");
+            make.innerHTML = "<strong>Make:</strong> " + profile.make;
+            profileContainer.appendChild(make);
+
+            var model = document.createElement("p");
+            model.innerHTML = "<strong>Model:</strong> " + profile.model;
+            profileContainer.appendChild(model);
+
+            var year = document.createElement("p");
+            year.innerHTML = "<strong>Year:</strong> " + profile.year;
+            profileContainer.appendChild(year);
+
+            var mileage = document.createElement("p");
+            mileage.innerHTML = "<strong>Mileage:</strong> " + profile.mileage;
+            profileContainer.appendChild(mileage);
+
+            var color = document.createElement("p");
+            color.innerHTML = "<strong>Color:</strong> " + profile.color;
+            profileContainer.appendChild(color);
+
+            var fuelType = document.createElement("p");
+            fuelType.innerHTML = "<strong>Fuel Type:</strong> " + profile.fuelType;
+            profileContainer.appendChild(fuelType);
+
+            vehicleProfilesElement.appendChild(profileContainer);
+        }
+    </script>
+</body>
+</html>

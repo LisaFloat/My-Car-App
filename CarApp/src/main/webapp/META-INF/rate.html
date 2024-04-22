@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate Your Mechanic Shop</title>
+    <link rel="stylesheet" href="css/rateStyles.css">
+    <script src ="js/rateScript.js"></script>
+    <style>
+        /* Add your custom CSS styles here */
+        /* Center the body text and buttons */
+        body {
+            text-align: center;
+        }
+        /* Style for stars */
+        .rating {
+            unicode-bidi: bidi-override;
+            direction: rtl;
+            text-align: left;
+        }
+        .rating > input { display: none; }
+        .rating > label { 
+            display: inline-block;
+            padding: 5px;
+            font-size: 30px;
+            color: #ccc;
+            cursor: pointer;
+        }
+        .rating > label:hover,
+        .rating > input:checked ~ label { color: #f39c12; }
+        /* Style for comments */
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+        /* Style for buttons */
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color:#ff5454; 
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover { background-color:#ff9898; } 
+    </style>
+</head>
+<body>
+    <h1>Rate Your Mechanic Shop</h1>
+    
+    <div class="rating">
+        <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars">&#9733;</label>
+        <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars">&#9733;</label>
+        <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars">&#9733;</label>
+        <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars">&#9733;</label>
+        <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star">&#9733;</label>
+    </div>
+    
+    <textarea id="comment" placeholder="Enter your comments here"></textarea>
+    
+    <button onclick="reviewFeedback()">Review Feedback</button>
+    <button onclick="submitFinalFeedback()">Submit Feedback</button>
+
+    <!-- Modal for review feedback -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Review Your Feedback</h2>
+            <p>Rating: <span id="reviewRating"></span></p>
+            <p>Comments: <span id="reviewComments"></span></p>
+            <button onclick="submitFinalFeedback()">Submit</button>
+        </div>
+    </div>
+
+    <div id="ratings-container">
+        
+    </div>
+
+    <script>
+        closeModal();
+        updateDisplayedReviews();
+
+        // Open the modal for reviewing feedback
+        function reviewFeedback() {
+            var rating = document.querySelector('input[name="rating"]:checked').value;
+            var comments = document.getElementById('comment').value;
+
+            // Display the rating and comments in the modal
+            document.getElementById('reviewRating').textContent = rating + " stars";
+            document.getElementById('reviewComments').textContent = comments;
+
+            // Show the modal
+            var modal = document.getElementById("myModal");
+            modal.style.display = "block";
+        }
+
+        function updateDisplayedReviews() {
+            var ratingsContainer = document.getElementById("ratings-container");
+
+            ratingsContainer.innerHTML = "";
+
+            // retrieve the ratings objects from local storage
+            var ratings = JSON.parse(localStorage.getItem("ratings")) || [];
+
+            for (var i = 0; i < ratings.length; i++) {
+                var rating = ratings[i];
+
+                /*
+                    creates an element for the rating in the following html format
+
+                    <div class="rating">
+                        <p></p>
+                        <p></p>
+                    </p>
+                */
+
+                var ratingContainer = document.createElement("div");
+                ratingContainer.classList.add("rating");
+
+                var ratingValue = document.createElement("p");
+                ratingValue.textContent = "Rating: " + rating.rating + " stars";
+                ratingContainer.appendChild(ratingValue);
+
+                var comments = document.createElement("p");
+                comments.textContent = "Comments: " + rating.comments;
+                ratingContainer.appendChild(comments);
+
+                ratingsContainer.appendChild(ratingContainer);
+            }
+        }
+
+        // Close the modal
+        function closeModal() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+
+        // Submit the final feedback
+        function submitFinalFeedback() {
+            var rating = document.querySelector('input[name="rating"]:checked').value;
+            var comments = document.getElementById('comment').value;
+
+            // retrieve the ratings objects from local storage
+            var ratings = JSON.parse(localStorage.getItem("ratings")) || [];
+
+            // create an object of the user submitted rating
+            var myRating = {
+                rating: rating,
+                comments: comments
+            };
+
+            // add the user submitted rating to the ratings array
+            ratings.push(myRating);
+
+            // store the ratings objects back to local storage
+            localStorage.setItem("ratings", JSON.stringify(ratings));
+
+            console.log("set new ratings");
+
+            // update the UI with our new additional review
+            updateDisplayedReviews();
+
+            // Simulate submission process
+            alert("Thank you for your feedback! Your rating has been submitted.");
+            closeModal(); // Close the modal
+            window.location.href = "app_page.html"; // Redirect to the app page
+        }
+    </script>
+</body>
+</html>
