@@ -1,4 +1,7 @@
 # MyCarApp
+
+Note: The repository may appear untouched, as the project was originally developed in Eclipse. It has since been migrated to GitHub for deployment purposes.
+
 Designed to provide users with a convenient solution to manage their vehicle maintenance tasks and schedules. In today's fast-paced world, car owners often face challenges in keeping track of essential maintenance requirements for their vehicles.
 
 The Car Maintenance App aims to address the challenge faced by car owners in managing and keeping track of essential maintenance tasks for their vehicles. With busy schedules and varying maintenance intervals, it becomes challenging for users to ensure timely servicing, which can lead to increased vehicle wear and decreased reliability.
