@@ -75,7 +75,7 @@
     <script>
         var vehicleProfilesElement = document.getElementById('vehicle-profiles');
 
-        var storedVehicleProfiles = JSON.parse(localStorage.getItem("myVehicleProfiles"));
+        var storedVehicleProfiles = JSON.parse(localStorage.getItem("myVehicleProfiles")) || [];
 
         for (var i = 0; i < storedVehicleProfiles.length; i++) {
             var profile = storedVehicleProfiles[i];
@@ -84,7 +84,7 @@
             profileContainer.classList.add("vehicle-profile");
 
             var profileName = document.createElement("h3");
-            profileName.textContent = profile.name;
+            profileName.textContent = profile.profileName; //changed from profile.name to profile.profileName
             profileContainer.appendChild(profileName);
 
             var make = document.createElement("p");
