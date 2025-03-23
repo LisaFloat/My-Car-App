@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIN Search - Car Maintenance App</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Add custom styles for the VIN search page */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #ff5454;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ff9898;
+        }
+
+        /* Style for the search results */
+        .search-results {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+        }
+
+        .search-results h3 {
+            margin-top: 0;
+        }
+
+        .search-results p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>VIN Search</h1>
+    </header>
+    <main>
+        <div class="container">
+            <label for="vin">Enter VIN:</label>
+            <input type="text" id="vin" name="vin" required>
+            <button onclick="searchVIN()">Search</button>
+
+            <div class="search-results" id="searchResults" style="display: none;">
+                <h3>Vehicle Profile</h3>
+                <p id="profileName"></p>
+                <p id="make"></p>
+                <p id="model"></p>
+                <p id="year"></p>
+                <p id="mileage"></p>
+                <p id="color"></p>
+                <p id="fuelType"></p>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Car Maintenance App</p>
+    </footer>
+
+    <script>
+        function searchVIN() {
+            var vin = document.getElementById("vin").value;
+            var myVehicleProfiles = JSON.parse(localStorage.getItem("myVehicleProfiles")) || [];
+            var foundProfile = null;
+
+            for (var i = 0; i < myVehicleProfiles.length; i++) {
+                if (myVehicleProfiles[i].VIN === vin) {
+                    foundProfile = myVehicleProfiles[i];
+                    break;
+                }
+            }
+
+            var searchResultsDiv = document.getElementById("searchResults");
+            if (foundProfile) {
+                document.getElementById("profileName").textContent = "Profile Name: " + foundProfile.profileName;
+                document.getElementById("make").textContent = "Make: " + foundProfile.make;
+                document.getElementById("model").textContent = "Model: " + foundProfile.model;
+                document.getElementById("year").textContent = "Year: " + foundProfile.year;
+                document.getElementById("mileage").textContent = "Mileage: " + foundProfile.mileage;
+                document.getElementById("color").textContent = "Color: " + foundProfile.color;
+                document.getElementById("fuelType").textContent = "Fuel Type: " + foundProfile.fuelType;
+                searchResultsDiv.style.display = "block";
+            } else {
+                alert("No vehicle profile found with VIN: " + vin);
+                searchResultsDiv.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

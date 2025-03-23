@@ -67,6 +67,13 @@
             padding: 8px;
             font-size: 14px;
         }
+        /* Style for multiple profiles creation*/
+        #addProfileBtn{
+            background-color: darkgreen;
+        }
+        #addProfileBtn:hover{
+            background-color: green;
+        }
     </style>
 </head>
 <body>
@@ -109,6 +116,7 @@
                 </select>
 
                 <button type="submit">Create Profile</button>
+                <button type = "button" id = "addProfileBtn" onclick = "addAnotherProfile()"> Add Another Profile</button>
             </form>
             <div class="notification" id="profileCreatedMessage">Profile Created</div>
         </div>
@@ -154,6 +162,7 @@
             event.preventDefault();
 
             // get the values of all the input fields in our form
+            var VIN = document.getElementById("VIN").value;
             var profileName = document.getElementById("profile-name").value;
             var make = document.getElementById("make").value;
             var model = document.getElementById("model").value;
@@ -167,6 +176,7 @@
 
             // create a javascript object from the form values
             var myNewVehicleProfile = {
+                VIN: VIN,
                 profileName: profileName,
                 make: make,
                 model: model,
@@ -191,6 +201,9 @@
                 window.location.href = "vehicle-profiles.html";
             }, 3000);
         });
+        function addAnotherProfile(){
+            window.location.reload();
+        }
     </script>
 </body>
 </html>
