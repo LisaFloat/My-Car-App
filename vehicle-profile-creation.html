@@ -77,7 +77,7 @@
         <div class="container">
             <form id="vehicleProfileForm">
                 <label for="VIN">VIN:</label>
-                <input type="text" id="VIN" name="VIN" required>
+                <input type="text" id="VIN" name="VIN">
                 <!-- Add button to trigger VIN decoding -->
                 <button type="button" onclick="decodeVIN()">Decode VIN</button>
 
@@ -108,9 +108,9 @@
                     <option value="Hybrid">Hybrid</option>
                 </select>
 
-                <button type="submit">Create Profile</button>
+                <button type="submit">Save Profile</button>
             </form>
-            <div class="notification" id="profileCreatedMessage">Profile Created</div>
+            <div class="notification" id="profileCreatedMessage">Profile Saved</div>
         </div>
     </main>
     <footer>
@@ -148,6 +148,29 @@
             });
         }
 
+        // Function to get the index of the profile being edited from the URL
+        function getEditProfileIndex() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('edit');
+        }
+
+        // Function to populate the form with the values of the profile being edited
+        function populateFormForEdit(index) {
+            if (storedVehicleProfiles && storedVehicleProfiles[index]) {
+                var profile = storedVehicleProfiles[index];
+                document.getElementById("profile-name").value = profile.profileName;
+                document.getElementById("make").value = profile.make;
+                document.getElementById("model").value = profile.model;
+                document.getElementById("year").value = profile.year;
+                document.getElementById("mileage").value = profile.mileage;
+                document.getElementById("color").value = profile.color;
+                document.getElementById("fuelType").value = profile.fuelType;
+            }
+        }
+
+        // Get the existing vehicle profiles from local storage or create an empty array if it does not exist
+        var storedVehicleProfiles = JSON.parse(localStorage.getItem("myVehicleProfiles")) || [];
+
         // Add event listener for form submission
         document.getElementById("vehicleProfileForm").addEventListener("submit", function(event) {
             // Prevent default form submission
@@ -162,9 +185,6 @@
             var color = document.getElementById("color").value;
             var fuelType = document.getElementById("fuelType").value;
 
-            // get the existing vehicle profiles from local storage or create an empty array if it does not exist
-            var myVehicleProfiles = JSON.parse(localStorage.getItem("myVehicleProfiles")) || [];
-
             // create a javascript object from the form values
             var myNewVehicleProfile = {
                 profileName: profileName,
@@ -176,11 +196,18 @@
                 fuelType: fuelType
             };
 
-            // add the new vehicle profile object to the existing vehicle profiles array
-            myVehicleProfiles.push(myNewVehicleProfile);
+            var editProfileIndex = getEditProfileIndex();
+
+            if (editProfileIndex) {
+                // If we are editing an existing profile, replace it with the new one
+                storedVehicleProfiles[editProfileIndex] = myNewVehicleProfile;
+            } else {
+                // add the new vehicle profile object to the existing vehicle profiles array
+                storedVehicleProfiles.push(myNewVehicleProfile);
+            }
 
             // store the vehicle profile object in local storage (as a string)
-            localStorage.setItem("myVehicleProfiles", JSON.stringify(myVehicleProfiles));
+            localStorage.setItem("myVehicleProfiles", JSON.stringify(storedVehicleProfiles));
 
             // Display profile created message
             document.getElementById("profileCreatedMessage").style.display = "block";
@@ -191,6 +218,14 @@
                 window.location.href = "vehicle-profiles.html";
             }, 3000);
         });
+
+        // On page load, check if we are editing an existing profile
+        window.onload = function() {
+            var editProfileIndex = getEditProfileIndex();
+            if (editProfileIndex) {
+                populateFormForEdit(editProfileIndex);
+            }
+        };
     </script>
 </body>
 </html>

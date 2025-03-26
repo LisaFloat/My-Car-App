@@ -29,6 +29,7 @@
             border-radius: 5px;
             padding: 15px;
             margin-bottom: 20px;
+            position: relative; /* Add position relative */
         }
 
         .vehicle-profile h3 {
@@ -52,6 +53,24 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
+        }
+
+        /* Style for the edit button */
+        .edit-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 12px;
+        }
+
+        .edit-button:hover {
+            background-color: #3e8e41;
         }
     </style>
 </head>
@@ -77,42 +96,61 @@
 
         var storedVehicleProfiles = JSON.parse(localStorage.getItem("myVehicleProfiles"));
 
-        for (var i = 0; i < storedVehicleProfiles.length; i++) {
-            var profile = storedVehicleProfiles[i];
+        function populateVehicleProfiles() {
+            vehicleProfilesElement.innerHTML = ''; // Clear existing profiles
 
-            var profileContainer = document.createElement("div");
-            profileContainer.classList.add("vehicle-profile");
+            if (storedVehicleProfiles) {
+                for (var i = 0; i < storedVehicleProfiles.length; i++) {
+                    var profile = storedVehicleProfiles[i];
 
-            var profileName = document.createElement("h3");
-            profileName.textContent = profile.name;
-            profileContainer.appendChild(profileName);
+                    var profileContainer = document.createElement("div");
+                    profileContainer.classList.add("vehicle-profile");
 
-            var make = document.createElement("p");
-            make.innerHTML = "<strong>Make:</strong> " + profile.make;
-            profileContainer.appendChild(make);
+                    var profileName = document.createElement("h3");
+                    profileName.textContent = profile.profileName; // Changed from profile.name
+                    profileContainer.appendChild(profileName);
 
-            var model = document.createElement("p");
-            model.innerHTML = "<strong>Model:</strong> " + profile.model;
-            profileContainer.appendChild(model);
+                    var make = document.createElement("p");
+                    make.innerHTML = "<strong>Make:</strong> " + profile.make;
+                    profileContainer.appendChild(make);
 
-            var year = document.createElement("p");
-            year.innerHTML = "<strong>Year:</strong> " + profile.year;
-            profileContainer.appendChild(year);
+                    var model = document.createElement("p");
+                    model.innerHTML = "<strong>Model:</strong> " + profile.model;
+                    profileContainer.appendChild(model);
 
-            var mileage = document.createElement("p");
-            mileage.innerHTML = "<strong>Mileage:</strong> " + profile.mileage;
-            profileContainer.appendChild(mileage);
+                    var year = document.createElement("p");
+                    year.innerHTML = "<strong>Year:</strong> " + profile.year;
+                    profileContainer.appendChild(year);
 
-            var color = document.createElement("p");
-            color.innerHTML = "<strong>Color:</strong> " + profile.color;
-            profileContainer.appendChild(color);
+                    var mileage = document.createElement("p");
+                    mileage.innerHTML = "<strong>Mileage:</strong> " + profile.mileage;
+                    profileContainer.appendChild(mileage);
 
-            var fuelType = document.createElement("p");
-            fuelType.innerHTML = "<strong>Fuel Type:</strong> " + profile.fuelType;
-            profileContainer.appendChild(fuelType);
+                    var color = document.createElement("p");
+                    color.innerHTML = "<strong>Color:</strong> " + profile.color;
+                    profileContainer.appendChild(color);
 
-            vehicleProfilesElement.appendChild(profileContainer);
+                    var fuelType = document.createElement("p");
+                    fuelType.innerHTML = "<strong>Fuel Type:</strong> " + profile.fuelType;
+                    profileContainer.appendChild(fuelType);
+
+                    // Edit Button
+                    var editButton = document.createElement("button");
+                    editButton.textContent = "Edit";
+                    editButton.classList.add("edit-button");
+                    editButton.setAttribute('data-profile-index', i);
+                    editButton.addEventListener('click', function() {
+                        var profileIndex = this.getAttribute('data-profile-index');
+                        window.location.href = 'vehicle-profile-creation.html?edit=' + profileIndex;
+                    });
+                    profileContainer.appendChild(editButton);
+
+                    vehicleProfilesElement.appendChild(profileContainer);
+                }
+            }
         }
+
+        populateVehicleProfiles();
     </script>
 </body>
 </html>
